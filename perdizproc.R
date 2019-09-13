@@ -1,6 +1,8 @@
 #Robert Z. Selden, Jr. - HRC/SFASU
 #processing workflow for Caddo and Toyah Perdiz points
 #output Rmd for each Perdiz point and include contextual/qualitative attributes
+require(devtools)
+install_github("zarquon42b/Rvcg", local=FALSE)
 library(Rvcg)
 library(rgl)
 #set working directory
