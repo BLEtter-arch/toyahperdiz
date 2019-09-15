@@ -22,10 +22,6 @@ meshintegrity(mesh, facecheck = TRUE, normcheck = TRUE)
 vcgArea(mesh, perface = FALSE)
 #identify resolution of mesh for use as voxelSize in remesh
 mres<-vcgMeshres(mesh)
-mres #mesh resolution#histogram of average edge length
-hist(mres$edgelength)
-#visualize average edge length on graph
-points(mres$res, 1000, pch=20, col=2, cex=2)
 #uniform remesh - use mesh resolution as voxelSize
 remesh<-vcgUniformRemesh(mesh, voxelSize = mres$res)
 #number of vertices and triangular faces after remesh
