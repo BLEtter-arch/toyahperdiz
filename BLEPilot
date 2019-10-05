@@ -1,0 +1,51 @@
+#process files prior to auto3dgm
+library(Rvcg)
+library(rgl)
+
+#set working directory
+setwd(getwd())
+
+#processing (file)
+x<-"FT02.ply"
+#import data
+mesh<-vcgImport(x, updateNormals = TRUE, readcolor = FALSE, clean = TRUE, silent = FALSE)
+#uniformremesh 
+resample <- vcgUniformRemesh(mesh, voxelSize = 1, 
+                             offset = 0, discretize = FALSE, multiSample = FALSE, 
+                             absDist = FALSE, mergeClost = TRUE, silent = FALSE)
+
+
+#descriptive characteristics of mesh
+#number of vertices and triangular faces
+meshInfo(mesh)
+#check for existence and validity of vertices, faces and vertex normals
+meshintegrity(mesh, facecheck = TRUE, normcheck = TRUE)
+#compute surface area of mesh
+vcgArea(mesh, perface = FALSE)
+#identify resolution of mesh for use as voxelSize in remesh
+mres<-vcgMeshres(mesh)
+ #mesh resolution
+
+#histogram of average edge length
+hist(mres$edgelength)
+#visualize average edge Length on graph
+points(mres$res, 1000, pch=20, col=2, cex=2)
+
+#uniform remesh
+remesh<-vcgUniformRemesh(mesh, voxelSize = mres$res)
+
+#number of vertices and triangular faces after remesh
+meshInfo(remesh)
+
+#export as off for use in auto3dgm
+vcgOffWrite(resample,filename = "data/FT02")
+#export as ply  for use with Landmark geometric morphometrics
+vcgPlyWrite(remesh, filename = "ply/FT02", ascii = TRUE)
+
+#decimate
+decimated <- vcgQEdecim(remesh, percent = 0.5)
+#number of vertices and triangular faces after remsh
+meshInfo(decimated)
+
+#export as off
+vcgOffWrite(decimated,filename = "data/lowres/FT02")
