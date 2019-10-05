@@ -1,0 +1,22 @@
+#3dgm
+library(auto3dgm)
+#set working directory
+setwd(getwd())
+Data_dir = "data"
+Output_dir = "3dgm"
+Levels=c(75,150)
+Ids = c('001','002','003','005')
+Names = c('001','002','003','005')
+#align
+FULL = align_shapes (Data_dir, Output_dir, Levels, Ids, Names)
+
+ds=FULL[[1]] #shape dataset
+ga_full=FULL[[2]] #global alignment
+pa=FULL[[3]] #pairwise alignments
+
+#geomorph
+library (geomorph)
+#advancedprocrustes
+advanced.procD.lm()
+#set working directory
+setwd(getwd())
