@@ -1,0 +1,49 @@
+#auto3dgm for Perdiz points from Toyah sites
+library(Matrix)
+library(clue)
+library(linprog)
+library(igraph)
+library(MASS)
+
+rm(list=ls())
+library(auto3dgm)
+setwd(getwd())
+Data_dir = "data"
+Output_dir = "3dgm"
+
+Levels=c(75,150)
+Ids = c('EF01', 'EF02', 'EFO3', 'EF05', 'EF06', 'EF08', 'EF09', 'EF10', 'EF11', 
+        'EF12', 'FT01', 'FT02', 'FT03', 'FT04', 'FT05', 'FT06', 'FT07', 'FT08', 'FT10',
+        'FT11', 'FT12')  
+Names = c('EF01', 'EF02', 'EFO3', 'EF05', 'EF06', 'EF08', 'EF09', 'EF10', 'EF11', 
+          'EF12', 'FT01', 'FT02', 'FT03', 'FT04', 'FT05', 'FT06', 'FT07', 'FT08', 'FT10',
+          'FT11', 'FT12')
+
+
+#FULL is a list of 3 returned elements.  User gets to specify what is returned.
+FULL = align_shapes(Data_dir, Output_dir, Levels, Ids, Names)
+
+
+ds = FULL[[1]]  #the whole shape dataset.
+ga_full=FULL[[2]]  #the global alignment 
+pa=FULL[[3]] #the pairwise alignments.  
+
+#Each of these three returned items is useful in identifying and fixing 
+#misaligned shapes. 
+
+#vcgPlyRead to import ascii PLY Files
+vcgPlyRead(file, updateNormals = TRUE, clean = TRUE)
+
+#vcguniformremesh to resample a mesh uniformly
+data(dataname)
+resample <- vcgUniformRemesh(x, voxelSize = NULL, offset = 0, discretize = FALSE, multiSample = FALSE, mergeClost = False, silent = False)
+require(rgl)
+shade3d(humresample, col=#)
+
+#create a loop
+x <- c(#,#,#)
+
+#vcgOFFWrite to Export meshes to OFF-files
+data(dataname)
+vcgOffWrite(mesh,filename = dataname)
+
